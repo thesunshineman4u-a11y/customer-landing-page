@@ -3,10 +3,10 @@ import { content } from "@/lib/content";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(content.seo.siteUrl),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || content.seo.siteUrl),
   title: content.seo.title,
   description: content.seo.description,
-  keywords: content.seo.keywords,
+  keywords: [...content.seo.keywords],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
