@@ -1,8 +1,15 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Script from "next/script";
 import { ArrowRight, CheckCircle2, Clock3, LockKeyhole } from "lucide-react";
 import { content } from "@/lib/content";
+
+const FLODESK_FORM_ID = "6ae99ee6c6bb282de8b83186";
+const FLODESK_ROOT_CLASS = `ff-${FLODESK_FORM_ID}`;
+const FLODESK_SUBMIT_URL = `https://form.flodesk.com/forms/${FLODESK_FORM_ID}/submit`;
+const FLODESK_CONFIG =
+  "eyJ0cmlnZ2VyIjp7Im1vZGUiOiJpbW1lZGlhdGVseSIsInZhbHVlIjowfSwib25TdWNjZXNzIjp7Im1vZGUiOiJyZWRpcmVjdCIsIm1lc3NhZ2UiOiIiLCJyZWRpcmVjdFVybCI6Imh0dHBzOi8vY3VzdG9tZXItbGFuZGluZy1wYWdlLXJ1YnkudmVyY2VsLmFwcC90aGFuay15b3UifSwiY29pIjp0cnVlLCJzaG93Rm9yUmV0dXJuVmlzaXRvcnMiOnRydWUsIm5vdGlmaWNhdGlvbiI6dHJ1ZSwiZ2RwciI6eyJhY2NlcHRzTWFya2V0aW5nIjpmYWxzZSwicHJpdmFjeVBvbGljeSI6eyJlbmFibGVkIjpmYWxzZSwibWFuZGF0b3J5IjpmYWxzZX19LCJ0cmFja2luZ0NvbmZpZyI6eyJtZXRhUGl4ZWxJZCI6IiIsImNvb2tpZUJhbm5lckVuYWJsZWQiOmZhbHNlLCJnb29nbGVBbmFseXRpY3NJZCI6IiJ9fQ==";
 
 type FormValues = {
   fullName: string;
@@ -27,13 +34,10 @@ const initialValues: FormValues = {
 export function CTAForm() {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState("");
 
   const update = (field: keyof FormValues, value: string) => {
     setValues((current) => ({ ...current, [field]: value }));
     if (errors[field]) setErrors((current) => ({ ...current, [field]: undefined }));
-    if (submitError) setSubmitError("");
   };
 
   const validate = () => {
@@ -46,31 +50,13 @@ export function CTAForm() {
     return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (isSubmitting || !validate()) return;
-
-    setIsSubmitting(true);
-    setSubmitError("");
-
-    try {
-      const endpoint = process.env.NEXT_PUBLIC_FORM_ENDPOINT;
-      if (endpoint) {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
-        if (!response.ok) throw new Error("Form submission failed");
-      } else {
-        await new Promise((resolve) => setTimeout(resolve, 650));
-      }
-      window.location.assign("/thank-you");
-    } catch {
-      setSubmitError(content.form.submitError);
-      setIsSubmitting(false);
-    }
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    if (!validate()) event.preventDefault();
   };
+
+  const nameParts = values.fullName.trim().split(/\s+/).filter(Boolean);
+  const firstName = nameParts[0] ?? "";
+  const lastName = nameParts.slice(1).join(" ") || firstName;
 
   const fieldError = (field: keyof FormValues) =>
     errors[field] ? (
@@ -80,7 +66,16 @@ export function CTAForm() {
     ) : null;
 
   return (
-    <section id="guide-form" className="navy-grid relative scroll-mt-4 overflow-hidden bg-[var(--navy)] py-20 sm:py-28">
+    <section
+      id="guide-form"
+      className={`${FLODESK_ROOT_CLASS} navy-grid relative scroll-mt-4 overflow-hidden bg-[var(--navy)] py-20 sm:py-28`}
+      data-ff-el="root"
+      data-ff-version="3"
+      data-ff-type="inline"
+      data-ff-name="inlineNoImage"
+      data-ff-stage="default"
+    >
+      <div data-ff-el="config" data-ff-config={FLODESK_CONFIG} hidden />
       <div aria-hidden="true" className="absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full bg-orange-500/10 blur-[120px]" />
       <div className="site-shell">
         <div className="grid overflow-hidden rounded-[30px] border border-white/10 bg-[#102948] shadow-[0_36px_100px_rgba(0,0,0,0.25)] lg:grid-cols-[0.8fr_1.2fr]">
@@ -103,51 +98,65 @@ export function CTAForm() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} noValidate className="grid gap-6 bg-[var(--paper)] p-6 sm:grid-cols-2 sm:p-10 lg:p-12">
-            <FormField label={content.form.fields.fullName.label} required htmlFor="fullName">
-              <input id="fullName" name="fullName" required autoComplete="name" className="field-control" placeholder={content.form.fields.fullName.placeholder} value={values.fullName} onChange={(e) => update("fullName", e.target.value)} aria-invalid={Boolean(errors.fullName)} aria-describedby={errors.fullName ? "fullName-error" : undefined} />
-              {fieldError("fullName")}
-            </FormField>
+          <form action={FLODESK_SUBMIT_URL} method="post" onSubmitCapture={handleSubmit} noValidate data-ff-el="form" className="grid gap-6 bg-[var(--paper)] p-6 sm:grid-cols-2 sm:p-10 lg:p-12">
+            <input type="hidden" name="firstName" value={firstName} />
+            <input type="hidden" name="lastName" value={lastName} />
+            <input type="text" name="confirm_email_address" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
 
-            <FormField label={content.form.fields.email.label} required htmlFor="email">
-              <input id="email" name="email" type="email" required inputMode="email" autoComplete="email" className="field-control" placeholder={content.form.fields.email.placeholder} value={values.email} onChange={(e) => update("email", e.target.value)} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} />
-              {fieldError("email")}
-            </FormField>
+            <div data-ff-el="content" className="contents">
+              <div data-ff-el="fields" className="contents">
+                <FormField label={content.form.fields.fullName.label} required htmlFor="fullName">
+                  <input id="fullName" name="fullName" required autoComplete="name" className="field-control" placeholder={content.form.fields.fullName.placeholder} value={values.fullName} onChange={(e) => update("fullName", e.target.value)} aria-invalid={Boolean(errors.fullName)} aria-describedby={errors.fullName ? "fullName-error" : undefined} />
+                  {fieldError("fullName")}
+                </FormField>
 
-            <FormField label={content.form.fields.mobile.label} required htmlFor="mobile">
-              <input id="mobile" name="mobile" type="tel" required inputMode="tel" autoComplete="tel" className="field-control" placeholder={content.form.fields.mobile.placeholder} value={values.mobile} onChange={(e) => update("mobile", e.target.value)} aria-invalid={Boolean(errors.mobile)} aria-describedby={errors.mobile ? "mobile-error" : undefined} />
-              {fieldError("mobile")}
-            </FormField>
+                <FormField label={content.form.fields.email.label} required htmlFor="email">
+                  <input id="email" name="email" type="email" required inputMode="email" autoComplete="email" className="field-control" placeholder={content.form.fields.email.placeholder} value={values.email} onChange={(e) => update("email", e.target.value)} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} />
+                  {fieldError("email")}
+                </FormField>
 
-            <FormField label={content.form.fields.interest.label} htmlFor="interest">
-              <select id="interest" name="interest" className="field-control" value={values.interest} onChange={(e) => update("interest", e.target.value)}>
-                <option value="">{content.form.fields.interest.placeholder}</option>
-                {content.form.fields.interest.options.map((option) => <option key={option} value={option}>{option}</option>)}
-              </select>
-            </FormField>
+                <FormField label={content.form.fields.mobile.label} required htmlFor="mobile">
+                  <input id="mobile" name="mobile" type="tel" required inputMode="tel" autoComplete="tel" className="field-control" placeholder={content.form.fields.mobile.placeholder} value={values.mobile} onChange={(e) => update("mobile", e.target.value)} aria-invalid={Boolean(errors.mobile)} aria-describedby={errors.mobile ? "mobile-error" : undefined} />
+                  {fieldError("mobile")}
+                </FormField>
 
-            <FormField label={content.form.fields.city.label} htmlFor="city" className="sm:col-span-2">
-              <input id="city" name="city" autoComplete="address-level2" className="field-control" placeholder={content.form.fields.city.placeholder} value={values.city} onChange={(e) => update("city", e.target.value)} />
-            </FormField>
+                <FormField label={content.form.fields.interest.label} htmlFor="interest">
+                  <select id="interest" name="interest" className="field-control" value={values.interest} onChange={(e) => update("interest", e.target.value)}>
+                    <option value="">{content.form.fields.interest.placeholder}</option>
+                    {content.form.fields.interest.options.map((option) => <option key={option} value={option}>{option}</option>)}
+                  </select>
+                </FormField>
 
-            <FormField label={content.form.fields.message.label} htmlFor="message" className="sm:col-span-2">
-              <textarea id="message" name="message" className="field-control" placeholder={content.form.fields.message.placeholder} value={values.message} onChange={(e) => update("message", e.target.value)} />
-            </FormField>
+                <FormField label={content.form.fields.city.label} htmlFor="city" className="sm:col-span-2">
+                  <input id="city" name="city" autoComplete="address-level2" className="field-control" placeholder={content.form.fields.city.placeholder} value={values.city} onChange={(e) => update("city", e.target.value)} />
+                </FormField>
 
-            <div className="sm:col-span-2">
-              {submitError ? <p className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-center text-sm font-bold text-red-700" role="alert">{submitError}</p> : null}
-              <button type="submit" disabled={isSubmitting} className="cta-button w-full">
-                {isSubmitting ? content.form.loading : content.form.button}
-                {!isSubmitting ? <ArrowRight aria-hidden="true" size={19} strokeWidth={2.5} /> : null}
-              </button>
-              <p className="mt-4 flex items-center justify-center gap-2 text-center text-sm font-medium text-[var(--muted)]">
-                <LockKeyhole aria-hidden="true" size={14} />
-                {content.form.trust}
-              </p>
+                <FormField label={content.form.fields.message.label} htmlFor="message" className="sm:col-span-2">
+                  <textarea id="message" name="message" className="field-control" placeholder={content.form.fields.message.placeholder} value={values.message} onChange={(e) => update("message", e.target.value)} />
+                </FormField>
+              </div>
+
+              <div data-ff-el="footer" className="sm:col-span-2">
+                <button type="submit" data-ff-el="submit" className="cta-button w-full">
+                  {content.form.button}
+                  <ArrowRight aria-hidden="true" size={19} strokeWidth={2.5} />
+                </button>
+                <p className="mt-4 flex items-center justify-center gap-2 text-center text-sm font-medium text-[var(--muted)]">
+                  <LockKeyhole aria-hidden="true" size={14} />
+                  {content.form.trust}
+                </p>
+              </div>
             </div>
+
+            <div data-ff-el="success" className="hidden" />
+            <div data-ff-el="error" className="sm:col-span-2 text-center text-sm font-bold text-red-700" role="alert" />
           </form>
         </div>
       </div>
+
+      <Script id="flodesk-form-handler" strategy="afterInteractive">
+        {`(function(w,d,t,h,s,n){w.FlodeskObject=n;var fn=function(){(w[n].q=w[n].q||[]).push(arguments);};w[n]=w[n]||fn;var f=d.getElementsByTagName(t)[0];var v='?v='+Math.floor(new Date().getTime()/(120*1000))*60;var sm=d.createElement(t);sm.async=true;sm.type='module';sm.src=h+s+'.mjs'+v;f.parentNode.insertBefore(sm,f);var sn=d.createElement(t);sn.async=true;sn.noModule=true;sn.src=h+s+'.js'+v;f.parentNode.insertBefore(sn,f);})(window,document,'script','https://assets.flodesk.com','/universal','fd');window.fd('form:handle',{formId:'${FLODESK_FORM_ID}',rootEl:'.${FLODESK_ROOT_CLASS}'});`}
+      </Script>
     </section>
   );
 }
