@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { ArrowRight, LockKeyhole } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock3, LockKeyhole } from "lucide-react";
 import { content } from "@/lib/content";
 
 type FormValues = {
@@ -80,16 +80,30 @@ export function CTAForm() {
     ) : null;
 
   return (
-    <section id="guide-form" className="relative scroll-mt-4 py-20 sm:py-28">
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#ffffff_0%,#fff7f1_46%,#f4f7fc_100%)]" />
+    <section id="guide-form" className="navy-grid relative scroll-mt-4 overflow-hidden bg-[var(--navy)] py-20 sm:py-28">
+      <div aria-hidden="true" className="absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full bg-orange-500/10 blur-[120px]" />
       <div className="site-shell">
-        <div className="mx-auto max-w-3xl overflow-hidden rounded-[32px] border border-white bg-white shadow-[0_28px_90px_rgba(15,23,42,0.13)]">
-          <div className="bg-[linear-gradient(135deg,var(--secondary),#124fa8)] px-5 py-10 text-center text-white sm:px-10 sm:py-12">
-            <h2 className="heading-balance text-4xl font-black tracking-[-0.04em] sm:text-5xl">{content.form.heading}</h2>
-            <p className="copy-balance mx-auto mt-3 max-w-xl text-[15px] font-medium leading-7 text-blue-100 sm:text-base">{content.form.subtext}</p>
+        <div className="grid overflow-hidden rounded-[30px] border border-white/10 bg-[#102948] shadow-[0_36px_100px_rgba(0,0,0,0.25)] lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="relative flex flex-col justify-between p-7 text-white sm:p-10 lg:p-12">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-orange-300">Your next step</p>
+              <h2 className="heading-balance mt-4 text-4xl font-black tracking-[-0.045em] sm:text-5xl">{content.form.heading}</h2>
+              <p className="copy-balance mt-5 text-[15px] font-medium leading-8 text-blue-100 sm:text-base">{content.form.subtext}</p>
+
+              <div className="mt-9 space-y-4">
+                <FormBenefit icon={<Clock3 size={18} />} text="Takes less than a minute" />
+                <FormBenefit icon={<CheckCircle2 size={18} />} text="Clear, practical guidance" />
+                <FormBenefit icon={<LockKeyhole size={18} />} text={content.form.trust} />
+              </div>
+            </div>
+
+            <div className="mt-10 border-t border-white/10 pt-6 text-sm leading-7 text-slate-300">
+              <span className="font-extrabold text-white">{content.hero.guideTitle}</span><br />
+              {content.hero.guideTime} · {content.hero.guideLabel}
+            </div>
           </div>
 
-          <form onSubmit={handleSubmit} noValidate className="grid gap-6 p-5 sm:grid-cols-2 sm:p-10">
+          <form onSubmit={handleSubmit} noValidate className="grid gap-6 bg-[var(--paper)] p-6 sm:grid-cols-2 sm:p-10 lg:p-12">
             <FormField label={content.form.fields.fullName.label} required htmlFor="fullName">
               <input id="fullName" name="fullName" required autoComplete="name" className="field-control" placeholder={content.form.fields.fullName.placeholder} value={values.fullName} onChange={(e) => update("fullName", e.target.value)} aria-invalid={Boolean(errors.fullName)} aria-describedby={errors.fullName ? "fullName-error" : undefined} />
               {fieldError("fullName")}
@@ -135,6 +149,15 @@ export function CTAForm() {
         </div>
       </div>
     </section>
+  );
+}
+
+function FormBenefit({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <div className="flex items-center gap-3 text-sm font-bold text-blue-50">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/10 text-orange-300">{icon}</span>
+      {text}
+    </div>
   );
 }
 

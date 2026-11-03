@@ -8,7 +8,7 @@ import { Urgency } from "@/components/Urgency";
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-hidden">
+    <main className="min-h-screen overflow-hidden bg-[var(--background)]">
       <Header />
       <Hero />
       <Problem />

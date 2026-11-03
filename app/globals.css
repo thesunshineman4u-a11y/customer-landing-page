@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --primary: #f26b1d;
-  --primary-dark: #ce4e09;
-  --secondary: #0b3c8c;
-  --background: #ffffff;
-  --text: #0f172a;
-  --muted: #5b6475;
-  --line: #e8edf5;
-  --surface: #f7f9fc;
-  --success: #159947;
+  --primary: #f36b2b;
+  --primary-dark: #d94f13;
+  --secondary: #174f82;
+  --navy: #081a33;
+  --navy-soft: #102c4d;
+  --background: #f4f0e8;
+  --paper: #fffdf8;
+  --text: #0b1b32;
+  --muted: #687387;
+  --line: #ded8cd;
+  --surface: #ece6db;
+  --success: #168354;
 }
 
 * {
@@ -55,15 +58,15 @@ textarea {
 }
 
 .site-shell {
-  width: min(100% - 32px, 1120px);
+  width: min(100% - 32px, 1180px);
   margin-inline: auto;
 }
 
 .section-kicker {
   color: var(--primary-dark);
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
@@ -81,20 +84,20 @@ textarea {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border-radius: 999px;
+  border-radius: 14px;
   border: 0;
   background: var(--primary);
-  padding: 0 24px;
+  padding: 0 25px;
   color: white;
   font-weight: 800;
-  box-shadow: 0 14px 32px rgba(242, 107, 29, 0.25);
+  box-shadow: 0 14px 34px rgba(243, 107, 43, 0.22);
   transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
 .cta-button:hover {
   transform: translateY(-2px);
   background: var(--primary-dark);
-  box-shadow: 0 18px 36px rgba(242, 107, 29, 0.3);
+  box-shadow: 0 18px 42px rgba(243, 107, 43, 0.28);
 }
 
 .cta-button:disabled {
@@ -106,9 +109,9 @@ textarea {
 .field-control {
   min-height: 54px;
   width: 100%;
-  border: 1px solid #d9e0eb;
-  border-radius: 14px;
-  background: white;
+  border: 1px solid #d8d2c7;
+  border-radius: 12px;
+  background: #fffdf9;
   padding: 0 15px;
   color: var(--text);
   transition: border-color 160ms ease, box-shadow 160ms ease;
@@ -124,7 +127,7 @@ textarea {
 
 .field-control:focus {
   border-color: var(--secondary);
-  box-shadow: 0 0 0 4px rgba(11, 60, 140, 0.1);
+  box-shadow: 0 0 0 4px rgba(23, 79, 130, 0.1);
   outline: none;
 }
 
@@ -143,6 +146,11 @@ textarea.field-control {
   50% { transform: translateY(-8px); }
 }
 
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -10px, 0) rotate(1deg); }
+}
+
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
@@ -153,7 +161,14 @@ textarea.field-control {
 }
 
 .float-soft {
-  animation: float-soft 5s ease-in-out infinite;
+  animation: drift 7s ease-in-out infinite;
+}
+
+.navy-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -167,6 +182,6 @@ textarea.field-control {
 
 @media (max-width: 359px) {
   .site-shell {
-    width: min(100% - 24px, 1120px);
+    width: min(100% - 24px, 1180px);
   }
 }
