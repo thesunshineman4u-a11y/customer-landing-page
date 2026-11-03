@@ -49,7 +49,7 @@ export const content = {
     body: "",
   },
   form: {
-    heading: "Get the Guide. Know Your Money.",
+    heading: "Get the Guide",
     subtext: "Share your details to receive the free guide and get personalized savings guidance from our team.",
     button: "Send Me the Free Guide",
     loading: "Sending...",
