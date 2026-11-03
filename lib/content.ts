@@ -5,9 +5,9 @@ export const content = {
   },
   seo: {
     siteUrl: "https://inside-the-bank-manjushree.aktarul7331400.chatgpt.site",
-    title: "Inside the Bank | Free Guide from Manjushree Finance Limited",
+    title: "Inside the Bank | Manjushree Finance Limited",
     description:
-      "Get Inside the Bank, a free 10-minute guide explaining how interest works, how banks use savings, and how to choose the right account.",
+      "Explore Inside the Bank, a practical guide explaining how interest works, how banks use savings, and how to choose the right account.",
     keywords: ["banking guide", "savings", "interest", "Manjushree Finance", "Nepal"],
   },
   hero: {
@@ -16,11 +16,10 @@ export const content = {
     headlineAfter: "",
     subheadline: "Understand what happens after you deposit your money—and make your next savings decision with confidence.",
     description:
-      '“Inside the Bank” is a free 10-minute guide that makes interest, deposits, and account choices easy to understand. Get the guide and discover the questions every saver should ask.',
-    cta: "Send Me the Free Guide",
+      '“Inside the Bank” is a practical guide that makes interest, deposits, and account choices easy to understand. Get the guide and discover the questions every saver should ask.',
+    cta: "Send Me the Guide",
     guideTitle: "Inside the Bank",
-    guideLabel: "Free guide",
-    guideTime: "10-minute read",
+    guideLabel: "Savings guide",
   },
   problem: {
     heading: "",
@@ -40,7 +39,7 @@ export const content = {
     heading: "How it works",
     steps: [
       "Fill the short form. It takes less than a minute.",
-      "Get your free guide. Read it at your own pace, in simple words.",
+      "Get your guide. Read it at your own pace, in simple words.",
       "Talk to us if you want help. Our team can help you choose the right account.",
     ],
   },
@@ -50,8 +49,8 @@ export const content = {
   },
   form: {
     heading: "Get the Guide",
-    subtext: "Share your details to receive the free guide and get personalized savings guidance from our team.",
-    button: "Send Me the Free Guide",
+    subtext: "Share your details to receive the guide and get personalized savings guidance from our team.",
+    button: "Send Me the Guide",
     loading: "Sending...",
     trust: "We respect your privacy. No spam.",
     submitError: "We couldn’t send your details. Please try again.",
@@ -77,9 +76,9 @@ export const content = {
   thankYou: {
     title: "Thank you!",
     message:
-      'We received your details. Your free guide, “Inside the Bank,” is on its way. Message us on WhatsApp if you want help choosing an account.',
+      'We received your details. Your “Inside the Bank” guide is on its way. Message us on WhatsApp if you want help choosing an account.',
     whatsappButton: "Message Us on WhatsApp",
-    guideButton: "Download the Free Guide",
+    guideButton: "Download the Guide",
   },
   whatsapp: {
     number: "9779851366640",

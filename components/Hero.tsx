@@ -70,8 +70,8 @@ export function Hero() {
                 <ArrowUpRight aria-hidden="true" size={20} />
               </div>
               <div>
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-orange-100">Read time</p>
-                <p className="text-sm font-black">{content.hero.guideTime}</p>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-orange-100">Made for savers</p>
+                <p className="text-sm font-black">Plain-language guide</p>
               </div>
             </div>
           </div>

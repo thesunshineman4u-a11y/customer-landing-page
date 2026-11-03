@@ -99,7 +99,7 @@ export function CTAForm() {
 
             <div className="mt-10 border-t border-white/10 pt-6 text-sm leading-7 text-slate-300">
               <span className="font-extrabold text-white">{content.hero.guideTitle}</span><br />
-              {content.hero.guideTime} · {content.hero.guideLabel}
+              {content.hero.guideLabel}
             </div>
           </div>
 

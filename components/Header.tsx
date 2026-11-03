@@ -17,7 +17,7 @@ export function Header() {
         </div>
         <div className="flex items-center gap-2 text-right text-xs font-bold uppercase tracking-[0.16em] text-blue-100 sm:text-sm">
           <span className="h-2 w-2 rounded-full bg-[var(--primary)]" />
-          <span>{content.hero.guideLabel} · {content.hero.guideTime}</span>
+          <span>Savings made simple</span>
         </div>
       </div>
     </header>
