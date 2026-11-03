@@ -39,7 +39,7 @@ export function Hero() {
             </a>
             <div className="flex items-center gap-3 text-sm font-semibold text-slate-300">
               <ShieldCheck aria-hidden="true" size={19} className="text-orange-300" />
-              Free. Practical. Made for savers.
+              Practical. Clear. Made for savers.
             </div>
           </div>
         </div>
