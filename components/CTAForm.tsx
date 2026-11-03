@@ -8,6 +8,14 @@ import { content } from "@/lib/content";
 const FLODESK_FORM_ID = "6ae99ee6c6bb282de8b83186";
 const FLODESK_ROOT_CLASS = `ff-${FLODESK_FORM_ID}`;
 const FLODESK_SUBMIT_URL = `https://form.flodesk.com/forms/${FLODESK_FORM_ID}/submit`;
+const FLODESK_FIELD_IDS = {
+  fullName: `${FLODESK_ROOT_CLASS}-IixxnkzdKA`,
+  email: `${FLODESK_ROOT_CLASS}-email`,
+  mobile: `${FLODESK_ROOT_CLASS}-COtSvvuEY0`,
+  interest: `${FLODESK_ROOT_CLASS}-4SqtZgVFu1`,
+  city: `${FLODESK_ROOT_CLASS}-1Rht3zlMUS`,
+  message: `${FLODESK_ROOT_CLASS}-rhQD5sQ8Aa`,
+} as const;
 const FLODESK_CONFIG =
   "eyJ0cmlnZ2VyIjp7Im1vZGUiOiJpbW1lZGlhdGVseSIsInZhbHVlIjowfSwib25TdWNjZXNzIjp7Im1vZGUiOiJyZWRpcmVjdCIsIm1lc3NhZ2UiOiIiLCJyZWRpcmVjdFVybCI6Imh0dHBzOi8vY3VzdG9tZXItbGFuZGluZy1wYWdlLXJ1YnkudmVyY2VsLmFwcC90aGFuay15b3UifSwiY29pIjp0cnVlLCJzaG93Rm9yUmV0dXJuVmlzaXRvcnMiOnRydWUsIm5vdGlmaWNhdGlvbiI6dHJ1ZSwiZ2RwciI6eyJhY2NlcHRzTWFya2V0aW5nIjpmYWxzZSwicHJpdmFjeVBvbGljeSI6eyJlbmFibGVkIjpmYWxzZSwibWFuZGF0b3J5IjpmYWxzZX19LCJ0cmFja2luZ0NvbmZpZyI6eyJtZXRhUGl4ZWxJZCI6IiIsImNvb2tpZUJhbm5lckVuYWJsZWQiOmZhbHNlLCJnb29nbGVBbmFseXRpY3NJZCI6IiJ9fQ==";
 
@@ -54,10 +62,6 @@ export function CTAForm() {
     if (!validate()) event.preventDefault();
   };
 
-  const nameParts = values.fullName.trim().split(/\s+/).filter(Boolean);
-  const firstName = nameParts[0] ?? "";
-  const lastName = nameParts.slice(1).join(" ") || firstName;
-
   const fieldError = (field: keyof FormValues) =>
     errors[field] ? (
       <p id={`${field}-error`} className="mt-2 text-sm font-semibold text-red-700" role="alert">
@@ -99,40 +103,38 @@ export function CTAForm() {
           </div>
 
           <form action={FLODESK_SUBMIT_URL} method="post" onSubmitCapture={handleSubmit} noValidate data-ff-el="form" className="grid gap-6 bg-[var(--paper)] p-6 sm:grid-cols-2 sm:p-10 lg:p-12">
-            <input type="hidden" name="firstName" value={firstName} />
-            <input type="hidden" name="lastName" value={lastName} />
             <input type="text" name="confirm_email_address" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
 
             <div data-ff-el="content" className="contents">
               <div data-ff-el="fields" className="contents">
-                <FormField label={content.form.fields.fullName.label} required htmlFor="fullName">
-                  <input id="fullName" name="fullName" required autoComplete="name" className="field-control" placeholder={content.form.fields.fullName.placeholder} value={values.fullName} onChange={(e) => update("fullName", e.target.value)} aria-invalid={Boolean(errors.fullName)} aria-describedby={errors.fullName ? "fullName-error" : undefined} />
+                <FormField label={content.form.fields.fullName.label} required htmlFor={FLODESK_FIELD_IDS.fullName}>
+                  <input id={FLODESK_FIELD_IDS.fullName} name="fields." data-ff-tab="fields.::email" required autoComplete="name" className="field-control" placeholder={content.form.fields.fullName.placeholder} value={values.fullName} onChange={(e) => update("fullName", e.target.value)} aria-invalid={Boolean(errors.fullName)} aria-describedby={errors.fullName ? "fullName-error" : undefined} />
                   {fieldError("fullName")}
                 </FormField>
 
-                <FormField label={content.form.fields.email.label} required htmlFor="email">
-                  <input id="email" name="email" type="email" required inputMode="email" autoComplete="email" className="field-control" placeholder={content.form.fields.email.placeholder} value={values.email} onChange={(e) => update("email", e.target.value)} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} />
+                <FormField label={content.form.fields.email.label} required htmlFor={FLODESK_FIELD_IDS.email}>
+                  <input id={FLODESK_FIELD_IDS.email} name="email" data-ff-tab="email:fields.:fields." type="email" required inputMode="email" autoComplete="email" className="field-control" placeholder={content.form.fields.email.placeholder} value={values.email} onChange={(e) => update("email", e.target.value)} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} />
                   {fieldError("email")}
                 </FormField>
 
-                <FormField label={content.form.fields.mobile.label} required htmlFor="mobile">
-                  <input id="mobile" name="mobile" type="tel" required inputMode="tel" autoComplete="tel" className="field-control" placeholder={content.form.fields.mobile.placeholder} value={values.mobile} onChange={(e) => update("mobile", e.target.value)} aria-invalid={Boolean(errors.mobile)} aria-describedby={errors.mobile ? "mobile-error" : undefined} />
+                <FormField label={content.form.fields.mobile.label} required htmlFor={FLODESK_FIELD_IDS.mobile}>
+                  <input id={FLODESK_FIELD_IDS.mobile} name="fields." data-ff-tab="fields.::email" type="tel" required inputMode="tel" autoComplete="tel" className="field-control" placeholder={content.form.fields.mobile.placeholder} value={values.mobile} onChange={(e) => update("mobile", e.target.value)} aria-invalid={Boolean(errors.mobile)} aria-describedby={errors.mobile ? "mobile-error" : undefined} />
                   {fieldError("mobile")}
                 </FormField>
 
-                <FormField label={content.form.fields.interest.label} htmlFor="interest">
-                  <select id="interest" name="interest" className="field-control" value={values.interest} onChange={(e) => update("interest", e.target.value)}>
+                <FormField label={content.form.fields.interest.label} htmlFor={FLODESK_FIELD_IDS.interest}>
+                  <select id={FLODESK_FIELD_IDS.interest} name="fields." data-ff-tab="fields.::email" className="field-control" value={values.interest} onChange={(e) => update("interest", e.target.value)}>
                     <option value="">{content.form.fields.interest.placeholder}</option>
                     {content.form.fields.interest.options.map((option) => <option key={option} value={option}>{option}</option>)}
                   </select>
                 </FormField>
 
-                <FormField label={content.form.fields.city.label} htmlFor="city" className="sm:col-span-2">
-                  <input id="city" name="city" autoComplete="address-level2" className="field-control" placeholder={content.form.fields.city.placeholder} value={values.city} onChange={(e) => update("city", e.target.value)} />
+                <FormField label={content.form.fields.city.label} htmlFor={FLODESK_FIELD_IDS.city} className="sm:col-span-2">
+                  <input id={FLODESK_FIELD_IDS.city} name="fields." data-ff-tab="fields.::email" autoComplete="address-level2" className="field-control" placeholder={content.form.fields.city.placeholder} value={values.city} onChange={(e) => update("city", e.target.value)} />
                 </FormField>
 
-                <FormField label={content.form.fields.message.label} htmlFor="message" className="sm:col-span-2">
-                  <textarea id="message" name="message" className="field-control" placeholder={content.form.fields.message.placeholder} value={values.message} onChange={(e) => update("message", e.target.value)} />
+                <FormField label={content.form.fields.message.label} htmlFor={FLODESK_FIELD_IDS.message} className="sm:col-span-2">
+                  <textarea id={FLODESK_FIELD_IDS.message} name="fields." data-ff-tab="fields.::email" className="field-control" placeholder={content.form.fields.message.placeholder} value={values.message} onChange={(e) => update("message", e.target.value)} />
                 </FormField>
               </div>
 
